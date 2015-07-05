@@ -1,8 +1,6 @@
 require 'grape-swagger'
 
-class API < Grape::API	
-	prefix 'api'
-	version 'v0.1', using: :path
+class API < Grape::API		
 
 	rescue_from ActiveRecord::RecordNotFound do |e|
 		Rack::Response.new({
@@ -18,6 +16,8 @@ class API < Grape::API
 		}.to_json, 500).finish
 	end
 
-	mount Music::Store	
-	add_swagger_documentation api_version:'v0.1', mount_path: "/docs", markdown: nil unless Rails.env.production?
+	mount V1::ApplicationV1Controller
+	mount V2::ApplicationV2Controller
+	# debugger	
+	# add_swagger_documentation api_version:"v1", mount_path: "/docs", markdown: nil unless Rails.env.production?
 end
